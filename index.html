@@ -30,15 +30,20 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 38px;
+            font-size: 48px;
             color: #d17697;
+            animation: fadeInOut 3s ease-in-out infinite;
         }
-</style>
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
 </head>
 <body>
 <canvas id="pinkboard"></canvas>
 <canvas id="textCanvas"></canvas>
-<div id="name">情人节快乐</div>
+<div id="name">祝陈彦南女士情人节快乐</div>
 
 <script>
     "use strict";
@@ -49,7 +54,7 @@
         "#9400D3", "#FF00FF", "#FFA07A", "#20B2AA"
     ];
 
-    const messages = ["星河璀璨不及你眼中光", "四季轮回唯爱你这一章"];
+    const messages = ["星河璀璨不及你眼中光","四季轮回唯爱你这一章","别人都在晒玫瑰巧克力", "而我只想晒晒和你牵手的影子","世界是个巨大的糖果店","但你是我唯一想含在心里的甜～"];
 
     class Heart {
         constructor(x, y, size) {
@@ -59,7 +64,7 @@
             this.opacity = Math.random() * 0.5 + 0.5;
             this.speedX = (Math.random() - 0.5) * 2;
             this.speedY = (Math.random() - 0.5) * 2;
-            this.color = `rgba(255, 105, 180, ${this.opacity})`;
+            this.color = `rgba(255, 0, 10, ${this.opacity})`;
         }
 
         draw(ctx) {
@@ -127,12 +132,10 @@
         textCtx.textAlign = 'center';
         textCtx.fillText(messages[messageIndex], textCanvas.width / 2, textCanvas.height / 2 + 100);
 
-        if (Math.random() < 0.01) {
-            messageIndex = (messageIndex + 1) % messages.length;
-            colorIndex = (colorIndex + 1) % colors.length;
-        }
+        messageIndex = (messageIndex + 1) % messages.length;
+        colorIndex = (colorIndex + 1) % colors.length;
 
-        requestAnimationFrame(animate);
+        setTimeout(animate, 1000); 
     }
 
     init();
@@ -142,4 +145,3 @@
 </script>
 </body>
 </html>
-
