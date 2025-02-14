@@ -1,147 +1,63 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>情人节快乐</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: black;
-            overflow: hidden;
+        .container {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            margin: 10px auto;
         }
-        canvas {
+
+        .heart {
+            stroke: #ff3366;
+            stroke-width: 4;
+            fill: transparent;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: draw 10s ease-in-out forwards;
+        }
+
+        .text {
             position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-        #pinkboard {
-            animation: anim 1.5s ease-in-out infinite;
-        }
-        @keyframes anim {
-            0% { transform: scale(0.8); }
-            25% { transform: scale(0.7); }
-            50% { transform: scale(1); }
-            75% { transform: scale(0.7); }
-            100% { transform: scale(0.8); }
-        }
-        #name {
-            position: absolute;
-            top: 50%;
+            top: 30%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 40px;
-            color: #d17697;
-            animation: fadeInOut 3s ease-in-out infinite;
+            font-size: 2em;
+            color: #ff3366;
+            font-family: Arial;
+            text-align: center;
+            animation: blink 1.5s infinite;
+            opacity: 0;
         }
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+                fill: #ff336633;
+            }
+        }
+
+        @keyframes blink {
+            50% { opacity: 1; }
         }
     </style>
 </head>
 <body>
-<canvas id="pinkboard"></canvas>
-<canvas id="textCanvas"></canvas>
-<div id="name">祝陈彦南女士情人节快乐</div>
-
-<script>
-    "use strict";
-
-    const colors = [
-        "#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#00FFFF", "#0000FF", "#8B00FF",
-        "#FF1493", "#FF69B4", "#FF6347", "#FFD700", "#32CD32", "#00CED1", "#1E90FF",
-        "#9400D3", "#FF00FF", "#FFA07A", "#20B2AA"
-    ];
-
-    const messages = ["星河璀璨不及你眼中光","四季轮回唯爱你这一章","别人都在晒玫瑰巧克力", "而我只想晒晒和你牵手的影子","世界是个巨大的糖果店","但你是我唯一想含在心里的甜～"];
-
-    class Heart {
-        constructor(x, y, size) {
-            this.x = x;
-            this.y = y;
-            this.size = size;
-            this.opacity = Math.random() * 0.5 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 2;
-            this.speedY = (Math.random() - 0.5) * 2;
-            this.color = `rgba(255, 0, 10, ${this.opacity})`;
-        }
-
-        draw(ctx) {
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.moveTo(this.x, this.y);
-            ctx.bezierCurveTo(
-                this.x - this.size / 2, this.y - this.size / 2,
-                this.x - this.size, this.y + this.size / 3,
-                this.x, this.y + this.size
-            );
-            ctx.bezierCurveTo(
-                this.x + this.size, this.y + this.size / 3,
-                this.x + this.size / 2, this.y - this.size / 2,
-                this.x, this.y
-            );
-            ctx.closePath();
-            ctx.fill();
-        }
-
-        update(canvasWidth, canvasHeight) {
-            this.x += this.speedX;
-            this.y += this.speedY;
-
-            if (this.x <= 0 || this.x >= canvasWidth) this.speedX *= -1;
-            if (this.y <= 0 || this.y >= canvasHeight) this.speedY *= -1;
-        }
-    }
-
-    const canvas = document.getElementById('pinkboard');
-    const ctx = canvas.getContext('2d');
-    const textCanvas = document.getElementById('textCanvas');
-    const textCtx = textCanvas.getContext('2d');
-
-    let hearts = [];
-    let messageIndex = 0;
-    let colorIndex = 0;
-
-    function init() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        textCanvas.width = window.innerWidth;
-        textCanvas.height = window.innerHeight;
-
-        hearts = [];
-        for (let i = 0; i < 100; i++) {
-            const size = Math.random() * 20 + 10;
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            hearts.push(new Heart(x, y, size));
-        }
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        textCtx.clearRect(0, 0, textCanvas.width, textCanvas.height);
-
-        hearts.forEach(heart => {
-            heart.update(canvas.width, canvas.height);
-            heart.draw(ctx);
-        });
-
-        textCtx.font = '24px Arial';
-        textCtx.fillStyle = colors[colorIndex];
-        textCtx.textAlign = 'center';
-        textCtx.fillText(messages[messageIndex], textCanvas.width / 2, textCanvas.height / 2 + 100);
-
-        messageIndex = (messageIndex + 1) % messages.length;
-        colorIndex = (colorIndex + 1) % colors.length;
-
-        setTimeout(animate, 1000); 
-    }
-
-    init();
-    animate();
-
-    window.addEventListener('resize', init);
-</script>
+    <div class="container">
+        <svg viewBox="0 0 600 600">
+            <!-- 心形路径 -->
+            <path class="heart" 
+                  d="M100,35 
+                     C50,0 0,50 100,120 
+                     C200,50 150,0 100,35z"
+                     transform="scale(3)"/>
+        </svg>
+        <div class="text">
+            ❤️ 彦南宝贝 ❤️<br/>
+            情人节日快乐<br/>
+            永远爱你
+        </div>
+    </div>
 </body>
 </html>
